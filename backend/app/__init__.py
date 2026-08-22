@@ -1,0 +1,1 @@
+"""MoneyScope backend application package."""
