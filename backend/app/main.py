@@ -14,6 +14,7 @@ from app.core.exceptions import (
     validation_exception_handler,
 )
 from app.core.logging import configure_logging, get_logger
+from app.models import user  # noqa: F401 - Import models for SQLAlchemy metadata
 
 logger = get_logger(__name__)
 

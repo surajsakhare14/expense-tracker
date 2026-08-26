@@ -23,7 +23,10 @@ Copy `.env.example` to `.env` and set `DATABASE_URL` to a development PostgreSQL
 ## Run
 
 ```text
+cd backend
 uvicorn app.main:app --reload
+OR
+python -m uvicorn app.main:app --reload
 ```
 
 The development API exposes `GET /health`, `/docs`, `/redoc`, and `/openapi.json` on port 8000.
