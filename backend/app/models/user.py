@@ -7,12 +7,16 @@ Defines:
 """
 
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+
+if TYPE_CHECKING:
+    from app.models.account import Account
 
 
 class User(Base):
@@ -46,6 +50,7 @@ class User(Base):
     refresh_tokens: Mapped[list["RefreshToken"]] = relationship(
         "RefreshToken", back_populates="user"
     )
+    accounts: Mapped[list["Account"]] = relationship("Account", back_populates="user")
 
     # Case-insensitive email uniqueness
     __table_args__ = (UniqueConstraint("email", name="uq_users_email_lower"),)
