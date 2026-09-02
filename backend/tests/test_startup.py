@@ -5,6 +5,8 @@ from pydantic import ValidationError
 from app.core.config import Settings
 from app.core.database import Base, engine
 
+DEVELOPMENT_DATABASE_URL = "postgresql+psycopg://user:password@localhost:5432/moneyscope"
+
 
 def test_application_startup(client):
     response = client.get("/openapi.json")
@@ -20,7 +22,11 @@ def test_documentation_endpoints(client):
 
 
 def test_settings_parse_comma_separated_origins():
-    settings = Settings(cors_origins="http://localhost:5173, https://app.example.com")
+    settings = Settings(
+        environment="development",
+        database_url=DEVELOPMENT_DATABASE_URL,
+        cors_origins="http://localhost:5173, https://app.example.com",
+    )
 
     assert settings.cors_origins == ["http://localhost:5173", "https://app.example.com"]
 
@@ -28,17 +34,21 @@ def test_settings_parse_comma_separated_origins():
 def test_missing_database_url_fails_clearly(monkeypatch):
     monkeypatch.delenv("DATABASE_URL", raising=False)
 
-    with pytest.raises(ValidationError, match="database_url"):
-        Settings(_env_file=None)
+    with pytest.raises(ValidationError, match="DATABASE_URL"):
+        Settings(environment="development", _env_file=None)
 
 
 def test_invalid_log_level_fails_clearly():
     with pytest.raises(ValidationError, match="log_level"):
-        Settings(database_url="postgresql+psycopg://example", log_level="TRACE")
+        Settings(
+            environment="development", database_url=DEVELOPMENT_DATABASE_URL, log_level="TRACE"
+        )
 
 
 def test_valid_log_level_is_accepted():
-    settings = Settings(database_url="postgresql+psycopg://example", log_level="WARNING")
+    settings = Settings(
+        environment="development", database_url=DEVELOPMENT_DATABASE_URL, log_level="WARNING"
+    )
 
     assert settings.log_level == "WARNING"
 

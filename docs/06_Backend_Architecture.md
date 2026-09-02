@@ -1466,6 +1466,7 @@ Example:
 
 ```text
 DATABASE_URL=
+TEST_DATABASE_URL=
 JWT_SECRET_KEY=
 JWT_ACCESS_TOKEN_EXPIRE_MINUTES=
 JWT_REFRESH_TOKEN_EXPIRE_DAYS=
@@ -1503,6 +1504,8 @@ Example:
 ```
 
 Production secrets must be managed through the deployment platform's secret manager/environment configuration.
+
+Pytest must run with `ENVIRONMENT=testing` and an explicit `TEST_DATABASE_URL` targeting a dedicated PostgreSQL database named `moneyscope_test`. Test setup must reject missing, development, or unapproved targets before connecting, applying migrations, or writing data. `DATABASE_URL` remains the development/staging/production application and Alembic target outside test mode. Test data is isolated with per-test transaction rollback; pytest must not create, drop, truncate, or delete development data.
 
 ---
 
@@ -1788,6 +1791,8 @@ transaction import
 ```
 
 Use a dedicated test database.
+
+Provision the local test database manually and use a least-privilege role restricted to it. Test setup may migrate the dedicated database to head only after verifying the connected database name is `moneyscope_test`.
 
 ---
 

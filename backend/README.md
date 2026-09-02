@@ -20,6 +20,8 @@ pip install -e ".[dev]"
 
 Copy `.env.example` to `.env` and set `DATABASE_URL` to a development PostgreSQL database. The application does not connect to PostgreSQL merely by being imported; a connection is opened when a session is requested.
 
+Create a separate PostgreSQL database named `moneyscope_test` for pytest and set `TEST_DATABASE_URL` to that database. Never point `TEST_DATABASE_URL` at the development database. Pytest fails before connecting when this variable is absent or does not target `moneyscope_test`.
+
 ## Run
 
 ```text
@@ -37,6 +39,8 @@ The development API exposes `GET /health`, `/docs`, `/redoc`, and `/openapi.json
 pytest
 ruff check .
 ```
+
+Pytest runs Alembic migrations against `TEST_DATABASE_URL` and rolls back each test transaction. It never creates or drops a database. Provision the test database manually with a role restricted to that database.
 
 ## Alembic
 

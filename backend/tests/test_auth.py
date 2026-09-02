@@ -15,15 +15,8 @@ from app.core.security import (
     verify_password,
     verify_refresh_token,
 )
-from app.main import app
 from app.repositories.user_repository import UserRepository
 from app.services.auth_service import AuthService
-
-
-@pytest.fixture
-def client():
-    """Create test client."""
-    return TestClient(app)
 
 
 @pytest.fixture

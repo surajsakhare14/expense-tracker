@@ -9,7 +9,7 @@ from app.models.base import Base
 __all__ = ["Base", "SessionLocal", "engine", "get_db"]
 
 settings = get_settings()
-engine = create_engine(settings.database_url, pool_pre_ping=True)
+engine = create_engine(settings.active_database_url, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, class_=Session, expire_on_commit=False)
 
 

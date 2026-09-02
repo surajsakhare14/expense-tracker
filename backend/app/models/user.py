@@ -17,6 +17,7 @@ from app.models.base import Base
 
 if TYPE_CHECKING:
     from app.models.account import Account
+    from app.models.category import Category
 
 
 class User(Base):
@@ -51,6 +52,7 @@ class User(Base):
         "RefreshToken", back_populates="user"
     )
     accounts: Mapped[list["Account"]] = relationship("Account", back_populates="user")
+    categories: Mapped[list["Category"]] = relationship("Category", back_populates="user")
 
     # Case-insensitive email uniqueness
     __table_args__ = (UniqueConstraint("email", name="uq_users_email_lower"),)
