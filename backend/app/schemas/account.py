@@ -16,6 +16,11 @@ class AccountCreateRequest(BaseModel):
     account_type: AccountType
     institution_name: str | None = Field(None, max_length=255)
     currency: str = Field(default="INR", min_length=3, max_length=3)
+    opening_balance: Decimal | None = Field(
+        default=None,
+        description="Optional starting balance; may be positive or negative. "
+        "A non-zero value creates an OPENING_BALANCE transaction.",
+    )
 
     @field_validator("name", "currency", "institution_name", mode="before")
     @classmethod
