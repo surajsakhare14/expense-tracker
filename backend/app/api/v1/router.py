@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.accounts.router import router as accounts_router
+from app.api.v1.analytics.router import router as analytics_router
 from app.api.v1.auth.router import profile_router
 from app.api.v1.auth.router import router as auth_router
 from app.api.v1.categories.router import router as categories_router
@@ -14,6 +15,7 @@ router = APIRouter()
 router.include_router(auth_router)
 router.include_router(profile_router)
 router.include_router(accounts_router)
+router.include_router(analytics_router)
 router.include_router(categories_router)
 router.include_router(transactions_router)
 router.include_router(transfers_router)
